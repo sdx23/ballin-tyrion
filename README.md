@@ -56,7 +56,7 @@ The data processing is done in different steps:
 - preprocessing: counting words, computing tf-idf
 - categorization / data mining:
 	use svm/knn/ann for categorization on a training set and mesure performance on test set
-	and/or 
+	*and/or* 
 	use k-means/som to find clusters and check whether they fit the existing subjects
 
 The first two steps are the data-aquiration and may be done together - getting
@@ -68,5 +68,51 @@ generated feature-vector for later use.
 For both of the steps using map-reduce is sensible, considering the amount of
 data.
 
+###Data aquiration
 
+tbd
+
+general idea:
+- parser for catalog: extract list of subjects
+- wget all texts for a selection of subjects
+
+###Preprocessing
+
+Preprocessing means computing the tf-idf and storing it together as
+feature-vector for the respective book id.
+
+The tf-idf, term frequency–inverse document frequency, is defined as:
+
+	tf-idf := tf * idf
+
+	tf(t,d) := f(t,d)
+	idf(t,D) := \log \frac{|D|}{\{d \in D : t \in d\}}
+
+where
+
+	t is a term
+	d is a document
+	D is the set of documents	
+	f(t,d) is the number of times the term t occurs in document d
+	
+We conclude:
+- tf(t,d) can be computed for each document separately (in a single map-reduce
+  task handling all terms) and is quite straight forward
+- idf(t,D) has to be computed for each term separately and we could possibly
+  reuse the "counted words vector" for all documents from the tf step before
+	- best try to get terms as keys, documents in which they appear as values 
+	- reduce to number of documents 
+
+- or even tuples (document, f(t,d)) as values, thus doing tf and idf in one step
+	- this requires two reduces (kind of): 
+		- reduce to the document number for idf
+		- reduce to document and tf
+	- complicates everything immensely
+
+- ultimatively we may want to dismiss terms with low tf-idf values (for all
+  documents) thus reducing the dimensionality of the feature space dismissing
+  less relevant components (this is similar to PCA). On the other hand this may
+  not be necessary. To be decided when finally working with a classifier.
+
+	
 
