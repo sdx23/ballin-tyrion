@@ -137,4 +137,4 @@ Statistical analysis:
 2. Mathematical sorcery
 3. Results
 	
-
+http://importantfish.com/one-step-matrix-multiplication-with-hadoop/
