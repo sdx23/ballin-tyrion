@@ -114,5 +114,27 @@ We conclude:
   less relevant components (this is similar to PCA). On the other hand this may
   not be necessary. To be decided when finally working with a classifier.
 
+Basic code setup
+================
+
+Software:
+
+* Hadoop 0.20.2
+* Ant to scp source over and compile on futuregrid
+
+MapReduce steps:
+
+1. Basic multifile word count. Emit out word -> count for each document
+2. Go from word -> count to word -> tf/idf
+3. Output per document tabbed data with word -> td/if
+4. Merge together all separate files into table (rows = words, columns = document names, values = tf/idf)
+
+See matrix multiplication for example of how to merge things together. Rest should be easy
+
+Statistical analysis:
+
+1. Read in CSV to R
+2. Mathematical sorcery
+3. Results
 	
 
