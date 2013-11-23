@@ -138,3 +138,7 @@ Statistical analysis:
 3. Results
 	
 http://importantfish.com/one-step-matrix-multiplication-with-hadoop/
+
+To merge outputs:
+
+* hadoop fs -getmerge /output/dir/on/hdfs/ /desired/local/output/file.txt
