@@ -60,6 +60,8 @@ public class WordCount {
         
     Job job = new Job(conf, "gutenberg-preprocessor");
     
+    job.setJarByClass(WordCount.class);
+    
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(IntWritable.class);
         
