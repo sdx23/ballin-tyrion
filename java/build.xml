@@ -60,7 +60,7 @@
                         
         <jar destfile ="${dist}/gutenberg-preprocessor.jar" basedir="${build}" includes="**/*.class">
             <manifest>
-                <attribute name="Main-Class" value="is.hi.sdm.gutenberg.WordCount" />
+                <attribute name="Main-Class" value="is.hi.sdm.gutenberg.Main" />
                 <!--<attribute name="Class-Path" value="${manifest_cp}" />-->
             </manifest>
         </jar>
