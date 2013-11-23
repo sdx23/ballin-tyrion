@@ -2,7 +2,7 @@ package is.hi.sdm.gutenberg;
 
 import java.io.IOException;
 import java.util.*;
-        
+
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.conf.*;
 import org.apache.hadoop.io.*;
@@ -11,6 +11,8 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+
+import com.cotdp.hadoop.ZipFileInputFormat;
         
 public class WordCount {
         
@@ -52,7 +54,7 @@ public class WordCount {
     job.setMapperClass(Map.class);
     job.setReducerClass(Reduce.class);
         
-    job.setInputFormatClass(TextInputFormat.class);
+    job.setInputFormatClass(ZipFileInputFormat.class);
     job.setOutputFormatClass(TextOutputFormat.class);
         
     FileInputFormat.addInputPath(job, new Path(args[0]));
