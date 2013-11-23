@@ -75,7 +75,7 @@ public class WordCount {
     //FileOutputFormat.setOutputPath(job, new Path(args[1]));
         
     ZipFileInputFormat.setLenient( true );
-    ZipFileInputFormat.setInputPaths(job, new Path(args[0]));
+    ZipFileInputFormat.setInputPaths(job, new Path(args[0] + "/*.zip"));
     TextOutputFormat.setOutputPath(job, new Path(args[1]));
     
     job.waitForCompletion(true);
