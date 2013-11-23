@@ -24,7 +24,7 @@
 	</target>
 	
 	<target name="compile" depends="init" description="---> compile">
-		<javac srcdir="${src};${zipsrc}" listfiles="true" destdir="${build}" deprecation="Yes" 
+		<javac target="1.6" srcdir="${src};${zipsrc}" listfiles="true" destdir="${build}" deprecation="Yes" 
 		 debug="true" debuglevel="lines,vars,source" includeantruntime="false">
             <classpath>
 	            <fileset dir="lib/" includes="*.jar" />

@@ -16,18 +16,30 @@ import com.cotdp.hadoop.ZipFileInputFormat;
         
 public class WordCount {
         
- public static class Map extends Mapper<LongWritable, Text, Text, IntWritable> {
+ public static class Map extends Mapper<Text, BytesWritable, Text, IntWritable> {
     private final static IntWritable one = new IntWritable(1);
     private Text word = new Text();
-        
-    public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        String line = value.toString();
-        StringTokenizer tokenizer = new StringTokenizer(line);
-        while (tokenizer.hasMoreTokens()) {
-            word.set(tokenizer.nextToken());
-            context.write(word, one);
-        }
-    }
+    
+    public void map( Text key, BytesWritable value, Context context ) throws IOException, InterruptedException {
+		// NOTE: the filename is the *full* path within the ZIP file
+		// e.g. "subdir1/subsubdir2/Ulysses-18.txt"
+		String filename = key.toString();
+
+		// We only want to process .txt files
+		if (filename.endsWith(".txt") == false)
+			return;
+
+		// Prepare the content
+		String content = new String(value.getBytes(), "UTF-8");
+		//content = content.replaceAll("[^A-Za-z \n]", "").toLowerCase();
+
+		// Tokenize the content
+		StringTokenizer tokenizer = new StringTokenizer(content);
+		while (tokenizer.hasMoreTokens()) {
+			word.set(tokenizer.nextToken());
+			context.write(word, one);
+		}
+	}
  } 
         
  public static class Reduce extends Reducer<Text, IntWritable, Text, IntWritable> {
@@ -57,9 +69,13 @@ public class WordCount {
     job.setInputFormatClass(ZipFileInputFormat.class);
     job.setOutputFormatClass(TextOutputFormat.class);
         
-    FileInputFormat.addInputPath(job, new Path(args[0]));
-    FileOutputFormat.setOutputPath(job, new Path(args[1]));
+    //FileInputFormat.addInputPath(job, new Path(args[0]));
+    //FileOutputFormat.setOutputPath(job, new Path(args[1]));
         
+    ZipFileInputFormat.setLenient( true );
+    ZipFileInputFormat.setInputPaths(job, new Path(args[0]));
+    TextOutputFormat.setOutputPath(job, new Path(args[1]));
+    
     job.waitForCompletion(true);
  }
         
