@@ -17,7 +17,7 @@
         <ivy:retrieve />
     </target>
 	
-	<target name="init" description="---> init">
+	<target name="init" depends="dependencies" description="---> init">
 		<tstamp />
 		<mkdir dir="${build}" />
 	</target>
@@ -55,9 +55,6 @@
                 <attribute name="Main-Class" value="is.hi.sdm.gutenberg.PreprocessorHelp" />
                 <attribute name="Class-Path" value="${manifest_cp}" />
             </manifest>
-            <fileset dir="${res}">
-                <include name="logback.xml" />
-            </fileset>
         </jar>
         
         <chmod perm="+x" file="${dist}/gutenberg-preprocessor.jar" />
