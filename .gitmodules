@@ -1,0 +1,3 @@
+[submodule "com-cotdp-hadoop"]
+	path = com-cotdp-hadoop
+	url = https://github.com/cotdp/com-cotdp-hadoop.git
