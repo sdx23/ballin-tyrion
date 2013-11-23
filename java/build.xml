@@ -33,7 +33,11 @@
 	</target>
 	
     <!-- build executable jar file -->
-    <target name="jar" depends="compile" description="--> create executable jar">                
+    <target name="jar" depends="compile" description="--> create executable jar">
+    	<copy todir="${dist}" file="pbs-example.sh" />
+    	
+    	<!-- We are only using hadoop-core, which is already available on target system -->
+    	<!--
         <copy todir="${dist}/lib">
             <fileset dir="${lib}">
                     <include name="**/*.jar" />
@@ -42,7 +46,9 @@
                     <exclude name="**/junit*.jar" />
             </fileset>
         </copy>
+        -->
 
+    	<!--
         <manifestclasspath property="manifest_cp" jarfile="${dist}/gutenberg-preprocessor.jar">
             <classpath>
                 <fileset dir="${dist}/lib">
@@ -50,11 +56,12 @@
                 </fileset>
             </classpath>
         </manifestclasspath>
+        -->
                         
         <jar destfile ="${dist}/gutenberg-preprocessor.jar" basedir="${build}" includes="**/*.class">
             <manifest>
-                <attribute name="Main-Class" value="is.hi.sdm.gutenberg.PreprocessorHelp" />
-                <attribute name="Class-Path" value="${manifest_cp}" />
+                <attribute name="Main-Class" value="is.hi.sdm.gutenberg.WordCount" />
+                <!--<attribute name="Class-Path" value="${manifest_cp}" />-->
             </manifest>
         </jar>
         
