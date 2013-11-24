@@ -24,7 +24,7 @@ public class Main {
 	
 	private static boolean job1(Configuration conf) throws Exception {
 	    
-	    String tmp = "gbp-tmp";
+	    tmp = "gbp-tmp";
 	    
 	    Job job = new Job(conf, "gutenberg-preprocessor");
 	    
@@ -74,7 +74,33 @@ public class Main {
 	    
 	    return job.waitForCompletion(true);
 	}
-	
+
+	private static boolean job3(Configuration conf) throws Exception {
+	    //Merge all the results from job2 so we can compute tf-idf
+	    String job3InputPath = tmp + "/merge/job2-merged";
+	    FileSystem hdfs = FileSystem.get(conf);
+	    FileUtil.copyMerge(hdfs, new Path(tmp + "/job2"), hdfs, new Path(job3InputPath), false, conf, null);
+	    
+	    conf.set("corpus", "2"); //hardcoded test for now
+	    //job 3: computeTF-IDF
+	    Job job = new Job(conf, "gutenberg-preprocessor-tfidf");
+	   
+	    job.setJarByClass(Main.class);
+	    
+	    job.setOutputKeyClass(Text.class);
+	    job.setOutputValueClass(Text.class);
+	    
+	    job.setInputFormatClass(TextInputFormat.class);
+	    job.setOutputFormatClass(TextOutputFormat.class);
+	    
+	    job.setMapperClass(TFIDF.Map.class);
+	    job.setReducerClass(TFIDF.Reduce.class);
+	    
+	    ZipFileInputFormat.setInputPaths(job, new Path(job3InputPath));
+	    TextOutputFormat.setOutputPath(job, new Path(tmp + "/job3"));
+	    
+	    return job.waitForCompletion(true);
+	}
 	
 	public static void main(String[] args) throws Exception {
 	    Configuration conf = new Configuration();
@@ -83,7 +109,9 @@ public class Main {
 	    tmp = "gbp-tmp";
 	    
 	    if (job1(conf)) {
-	    	job2(conf);
+	    	if (job2(conf)) {
+	    		job3(conf);
+	    	}
 	    }
 	 }
 }
