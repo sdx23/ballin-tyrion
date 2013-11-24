@@ -61,7 +61,7 @@ public class Main {
 	    job.setJarByClass(Main.class);
 	    
 	    job.setOutputKeyClass(Text.class);
-	    job.setOutputValueClass(IntWritable.class);
+	    job.setOutputValueClass(Text.class);
 	    
 	    job.setInputFormatClass(TextInputFormat.class);
 	    job.setOutputFormatClass(TextOutputFormat.class);

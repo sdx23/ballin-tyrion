@@ -8,7 +8,7 @@ public class StopWords {
 	
 	static {
 		//Some stop words, allegedly from Google
-		STOP_WORDS.add("I"); STOP_WORDS.add("a");
+		STOP_WORDS.add("i"); STOP_WORDS.add("a");
 		STOP_WORDS.add("about");	STOP_WORDS.add("an");
 		STOP_WORDS.add("are"); STOP_WORDS.add("as");
 		STOP_WORDS.add("at"); STOP_WORDS.add("be");

@@ -33,7 +33,7 @@ public class WordCount {
 					continue;
 				}
 				
-				word.set(filename + "@" + token);
+				word.set(token + "@" + filename);
 				context.write(word, one);
 			}
 		}
