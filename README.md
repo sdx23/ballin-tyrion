@@ -149,7 +149,8 @@ http://cotdp.com/2011/03/reading-zip-files-from-hadoop-mapreduce/
 TF-IDF in hadoop tutorial:
 http://marcellodesales.wordpress.com/2009/12/31/tf-idf-in-hadoop-part-1-word-frequency-in-doc/
 
-To build (Debian/Ubuntu-based systems):
+To build (Debian/Ubuntu-based systems)
+--------------------------------------
 
 clone this project.
 
