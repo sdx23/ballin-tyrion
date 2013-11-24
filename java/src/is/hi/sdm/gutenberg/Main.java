@@ -51,7 +51,7 @@ public class Main {
 	
 	private static boolean job2(Configuration conf) throws Exception {
 	    //Merge all the results form job 1 so we can count number of words in each document.
-	    String job2InputPath = tmp + "/job2/wordcount-merged";
+	    String job2InputPath = tmp + "/merge/wordcount-merged";
 	    FileSystem hdfs = FileSystem.get(conf);
 	    FileUtil.copyMerge(hdfs, new Path(tmp), hdfs, new Path(job2InputPath), false, conf, null);
 	    
