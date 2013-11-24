@@ -149,6 +149,14 @@ http://cotdp.com/2011/03/reading-zip-files-from-hadoop-mapreduce/
 TF-IDF in hadoop tutorial:
 http://marcellodesales.wordpress.com/2009/12/31/tf-idf-in-hadoop-part-1-word-frequency-in-doc/
 
+Creating CSV:
+
+* Make sure output of tf-idf step is sorted alphabetically by word
+* Merge the files into one giant file
+* Two passes of the file
+* First pass gathers all document names (or ids) for the column headers
+* Second pass constructs rows to put into csv. Since we are sorted alphabetically, we can do this in one pass (i.e. construct row until word changes).
+
 To build (Debian/Ubuntu-based systems)
 --------------------------------------
 
