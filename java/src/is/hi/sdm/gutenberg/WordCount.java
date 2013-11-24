@@ -1,5 +1,6 @@
 package is.hi.sdm.gutenberg;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.*;
 
@@ -14,7 +15,12 @@ public class WordCount {
 	    public void map( Text key, BytesWritable value, Context context ) throws IOException, InterruptedException {
 			// NOTE: the filename is the *full* path within the ZIP file
 			// e.g. "subdir1/subsubdir2/Ulysses-18.txt"
-			String filename = key.toString();
+	    	
+	    	//we only want the filename without extension. should correspond to id of the text.
+			String filename = new File(key.toString()).getName();
+			if (filename.indexOf(".") > 0) {
+				filename = filename.substring(0, filename.lastIndexOf("."));
+			}
 	
 			// We only want to process .txt files
 			if (!filename.endsWith(".txt"))
