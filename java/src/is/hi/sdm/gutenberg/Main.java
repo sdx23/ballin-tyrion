@@ -167,7 +167,9 @@ public class Main {
         	String idf = split[1].trim();
         	
         	//every time we have a new word, we need to write the row and reset.
-        	if (!word.equals(previousWord)) {
+        	//ignore if prev word is "" because that is the first time, and we don't need a
+        	//blank row.
+        	if (!word.equals(previousWord) && !previousWord.equals("")) {
         		//we should now have a full map.
         		
     			String[] row = new String[numDocuments + 1];
