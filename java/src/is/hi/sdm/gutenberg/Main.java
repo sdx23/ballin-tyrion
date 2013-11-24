@@ -121,9 +121,9 @@ public class Main {
 	    //first pass: get all document names
 	    TreeMap<String, String> documents = new TreeMap<String, String>();
 	    
-	    Path path = new Path(csvInputPath);
+	    Path csvInputpathHDFS = new Path(csvInputPath);
         
-        BufferedReader br = new BufferedReader(new InputStreamReader(hdfs.open(path)));
+        BufferedReader br = new BufferedReader(new InputStreamReader(hdfs.open(csvInputpathHDFS)));
         String line;
         String previousDocument = "";
         
@@ -141,7 +141,7 @@ public class Main {
         FSDataOutputStream out = hdfs.create(new Path(outputPath + "/data.csv"));
         CSVWriter writer = new CSVWriter(new OutputStreamWriter(out));
         
-        br = new BufferedReader(new InputStreamReader(hdfs.open(path)));
+        br = new BufferedReader(new InputStreamReader(hdfs.open(csvInputpathHDFS)));
         line = null;
         String previousWord = "";
         
@@ -151,7 +151,7 @@ public class Main {
         String[] firstRow = new String[numDocuments + 1];
         
         firstRow[0] = "word";
-        int c = 0;
+        int c = 1;
         
         for (String key : keys) {
         	firstRow[c] = key;
@@ -167,12 +167,11 @@ public class Main {
         	String idf = split[1].trim();
         	
         	//every time we have a new word, we need to write the row and reset.
-        	//otherwise we just record the word's IDF in the map
         	if (!word.equals(previousWord)) {
         		//we should now have a full map.
         		
     			String[] row = new String[numDocuments + 1];
-    			row[0] = word;
+    			row[0] = previousWord;
     			
         		c = 1;
         		
@@ -185,10 +184,9 @@ public class Main {
         		
         		writer.writeNext(row);
         	}
-        	else {
-        		documents.put(doc, idf);
-        	}
         	
+        	//record the idf in the map for this current word.
+        	documents.put(doc, idf);
         	previousWord = word;
         }
         
