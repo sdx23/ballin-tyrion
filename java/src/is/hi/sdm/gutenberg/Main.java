@@ -131,7 +131,7 @@ public class Main {
         	String wordAndDoc = line.split("\t")[0];
         	String doc = wordAndDoc.split("@")[1];
         	if (!previousDocument.equals(doc)) {
-        		documents.put(doc, "");
+        		documents.put(doc, "0");
         	}
         }
         
@@ -179,8 +179,17 @@ public class Main {
         		
         		//create row and then reset.
         		for (String key : keys) {
-        			row[c] = documents.get(key);
-        			documents.put(key, "");
+        			String stringValue = documents.get(key);
+        			double val = Double.parseDouble(stringValue);
+        			
+        			if (val > 0) { 
+        				row[c] = stringValue;
+        			}
+        			else {
+        				row[c] = "0";
+        			}
+        		
+        			documents.put(key, "0");
         			c++;
         		}
         		
