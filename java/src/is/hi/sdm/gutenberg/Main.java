@@ -158,13 +158,13 @@ public class Main {
         	c++;
         }
         
-        writer.writeNext(documents.keySet().toArray(new String[0]));
+        writer.writeNext(firstRow);
         
         while ((line = br.readLine()) != null) {
         	String[] split = line.split("\t");
-        	String doc = split[0].split("@")[1];
-        	String word = split[0].split("@")[0];
-        	String idf = split[1];
+        	String doc = split[0].split("@")[1].trim();
+        	String word = split[0].split("@")[0].trim();
+        	String idf = split[1].trim();
         	
         	//every time we have a new word, we need to write the row and reset.
         	//otherwise we just record the word's IDF in the map
