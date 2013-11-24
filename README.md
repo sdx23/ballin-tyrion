@@ -148,3 +148,17 @@ http://cotdp.com/2011/03/reading-zip-files-from-hadoop-mapreduce/
 
 TF-IDF in hadoop tutorial:
 http://marcellodesales.wordpress.com/2009/12/31/tf-idf-in-hadoop-part-1-word-frequency-in-doc/
+
+To build (Debian/Ubuntu-based systems):
+
+clone this project.
+
+Run `git submodule init` and then `git submodule update`. This downloads the Hadoop zip file reader.
+
+`sudo apt-get install ant ivy` if you don't have them already.
+
+Make sure Ivy is on the classpath (usually `export CLASSPATH=/usr/share/java/ivy.jar:$CLASSPATH`)
+
+Run ant: `ant`
+
+This will create a `dist/` directory that has the preprocessor jar inside it. It can then be SCPed to Futuregrid.
