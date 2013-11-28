@@ -9,6 +9,10 @@
 
 module add java
 
+# Number of documents in corpus: must be specified here to get correct
+# TF-IDF values!
+export GBP_CORPUS=1
+
 ### Run the myHadoop environment script to set the appropriate variables
 #
 # Note: ensure that the variables are set correctly in bin/setenv.sh
@@ -47,7 +51,7 @@ echo "Preprocessing Gutenberg"
 $HADOOP_HOME/bin/hadoop --config $HADOOP_CONF_DIR dfs -mkdir gbp-inputs
 $HADOOP_HOME/bin/hadoop --config $HADOOP_CONF_DIR dfs -copyFromLocal ~/dist/*.zip gbp-inputs
 $HADOOP_HOME/bin/hadoop --config $HADOOP_CONF_DIR dfs -ls gbp-inputs
-$HADOOP_HOME/bin/hadoop --config $HADOOP_CONF_DIR jar ~/dist/gutenberg-preprocessor.jar
+$HADOOP_HOME/bin/hadoop --config $HADOOP_CONF_DIR jar ~/dist/gutenberg-preprocessor.jar $GBP_CORPUS
 $HADOOP_HOME/bin/hadoop --config $HADOOP_CONF_DIR dfs -ls gbp-outputs
 #$HADOOP_HOME/bin/hadoop --config $HADOOP_CONF_DIR dfs -copyToLocal gbp-outputs ${HOME}/gutenberg-preprocessor-outputs
 echo

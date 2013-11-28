@@ -91,7 +91,7 @@ public class Main {
 	    FileSystem hdfs = FileSystem.get(conf);
 	    FileUtil.copyMerge(hdfs, new Path(tmp + "/job2"), hdfs, new Path(job3InputPath), false, conf, null);
 	    
-	    conf.set("corpus", "7"); //hardcoded test for now
+	    
 	    //job 3: computeTF-IDF
 	    Job job = new Job(conf, "gutenberg-preprocessor-tfidf");
 	   
@@ -122,7 +122,7 @@ public class Main {
 	    //We can get away with this because the words are sorted alphabetically, so our 3rd dimension (word)
 	    //Only needs to be stored as a string.
 	    //0 is a default value in case a document is missing a TF-IDF value, which gets set in the first pass
-	    //and on row resets
+	    //and on row resets.
 	    TreeMap<String, String> documentAndIDF = new TreeMap<String, String>();
 	    
 	    //first pass: get all document names
@@ -209,11 +209,12 @@ public class Main {
 	
 	public static void main(String[] args) throws Exception {
 	    Configuration conf = new Configuration();
-		//inputPath = args[0] + "/*.zip";
-	    //outputPath = args[1];
 	    inputPath = "gbp-inputs/*.zip";
 	    outputPath = "gbp-outputs";
 	    tmp = "gbp-tmp";
+	    
+	    //Need to hard code number of documents, for ease of use right now.
+	    conf.set("corpus", args[0]);
 	    
 	    if (job1(conf)) {
 	    	if (job2(conf)) {
