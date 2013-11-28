@@ -25,6 +25,12 @@ public class WordCount {
 				filename = filename.substring(0, filename.lastIndexOf("."));
 			}
 			
+			//remove everything after the last /
+			if (filename.indexOf("/") > 0) {
+				int index = filename.lastIndexOf("/");
+				filename = filename.substring(index);
+			}
+			
 			// Prepare the content
 			String content = new String(value.getBytes(), "UTF-8");
 			content = content.replaceAll("[^A-Za-z \n]", "").toLowerCase();
