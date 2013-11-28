@@ -42,7 +42,9 @@ public class TFIDF {
 	     */
 	    protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
 	        // get the number of documents indirectly from the file-system (stored in the job name on purpose)
-	        int numberOfDocumentsInCorpus = Integer.parseInt(context.getConfiguration().get("corpus"));
+	        //int numberOfDocumentsInCorpus = Integer.parseInt(context.getConfiguration().get("corpus"));
+			//above: BROKEN
+	        int numberOfDocumentsInCorpus = 511;
 	        // total frequency of this word
 	        int numberOfDocumentsInCorpusWhereKeyAppears = 0;
 	        java.util.Map<String, String> tempFrequencies = new HashMap<String, String>();
@@ -60,6 +62,11 @@ public class TFIDF {
 	 
 	            //interse document frequency quocient between the number of docs in corpus and number of docs the term appears
 	            double idf = (double) numberOfDocumentsInCorpus / (double) numberOfDocumentsInCorpusWhereKeyAppears;
+
+				//DEBUG
+				//if(idf < 1){
+				//		System.out.format("idf < 1 for D=%d d=%d w=%s\n", numberOfDocumentsInCorpus, numberOfDocumentsInCorpusWhereKeyAppears, key);
+				//}
 	 
 	            //given that log(10) = 0, just consider the term frequency in documents
 	            double tfIdf = numberOfDocumentsInCorpus == numberOfDocumentsInCorpusWhereKeyAppears ?
