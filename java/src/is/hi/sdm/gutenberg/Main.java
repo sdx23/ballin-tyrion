@@ -91,7 +91,7 @@ public class Main {
 	    FileSystem hdfs = FileSystem.get(conf);
 	    FileUtil.copyMerge(hdfs, new Path(tmp + "/job2"), hdfs, new Path(job3InputPath), false, conf, null);
 	    
-	    conf.set("corpus", "2"); //hardcoded test for now
+	    conf.set("corpus", "7"); //hardcoded test for now
 	    //job 3: computeTF-IDF
 	    Job job = new Job(conf, "gutenberg-preprocessor-tfidf");
 	   
@@ -178,22 +178,22 @@ public class Main {
         		c = 1;
         		
         		//create row and then reset.
+        		//only write it if it is above the magic threshold 
+        		boolean writeRow = false;
         		for (String key : keys) {
         			String stringValue = documents.get(key);
         			double val = Double.parseDouble(stringValue);
         			
-        			if (val > 0) { 
-        				row[c] = stringValue;
+        			if (val >= .00001) {
+        				writeRow = true;        				
         			}
-        			else {
-        				row[c] = "0";
-        			}
-        		
+        			
+        			row[c] = idf;
         			documents.put(key, "0");
         			c++;
         		}
         		
-        		writer.writeNext(row);
+        		if (writeRow) writer.writeNext(row);
         	}
         	
         	//record the idf in the map for this current word.
