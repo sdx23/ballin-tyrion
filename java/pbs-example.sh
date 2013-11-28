@@ -13,6 +13,8 @@ module add java
 # TF-IDF values!
 export GBP_CORPUS=1
 
+export GBP_THRES="0.0001"
+
 # avoid problems with decimal points
 export LC_ALL="en_US.UTF-8"
 
@@ -54,7 +56,7 @@ echo "Preprocessing Gutenberg"
 $HADOOP_HOME/bin/hadoop --config $HADOOP_CONF_DIR dfs -mkdir gbp-inputs
 $HADOOP_HOME/bin/hadoop --config $HADOOP_CONF_DIR dfs -copyFromLocal ~/dist/*.zip gbp-inputs
 $HADOOP_HOME/bin/hadoop --config $HADOOP_CONF_DIR dfs -ls gbp-inputs
-$HADOOP_HOME/bin/hadoop --config $HADOOP_CONF_DIR jar ~/dist/gutenberg-preprocessor.jar $GBP_CORPUS
+$HADOOP_HOME/bin/hadoop --config $HADOOP_CONF_DIR jar ~/dist/gutenberg-preprocessor.jar $GBP_CORPUS $GBP_THRES
 $HADOOP_HOME/bin/hadoop --config $HADOOP_CONF_DIR dfs -ls gbp-outputs
 #$HADOOP_HOME/bin/hadoop --config $HADOOP_CONF_DIR dfs -copyToLocal gbp-outputs ${HOME}/gutenberg-preprocessor-outputs
 echo

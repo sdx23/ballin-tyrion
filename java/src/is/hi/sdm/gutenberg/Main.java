@@ -34,6 +34,7 @@ public class Main {
 	/**
 	 * Threshold for values to be considered relevant. Any TF-IDF below this will
 	 * not get emitted during csv generation.
+	 * - ignored if second parameter is given
 	 */
 	public static final double THRESHOLD = .00001;
 	
@@ -123,6 +124,7 @@ public class Main {
 	    String csvInputPath = tmp + "/merge/job3-merged";
 	    FileSystem hdfs = FileSystem.get(conf);
 	    FileUtil.copyMerge(hdfs, new Path(tmp + "/job3"), hdfs, new Path(csvInputPath), false, conf, null);
+		double threshold = Double.parseDouble(conf.get("threshold"));
 	    
 	    //This map stores the document name and the current TF-IDF value for the given word.
 	    //We can get away with this because the words are sorted alphabetically, so our 3rd dimension (word)
@@ -225,6 +227,9 @@ public class Main {
 	    
 	    //Need to hard code number of documents
 	    conf.set("corpus", args[0]);
+	    if (args.length > 1) {
+	    	conf.set("threshold", args[1]);
+		}
 	    
 	    if (job1(conf)) {
 	    	if (job2(conf)) {
