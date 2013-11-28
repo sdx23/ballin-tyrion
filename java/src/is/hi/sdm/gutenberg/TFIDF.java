@@ -30,6 +30,12 @@ public class TFIDF {
 	
 	public static class Reduce extends Reducer<Text, Text, Text, Text> {
 		 
+		/**
+		 * Threshold for values to be considered relevant. Any TF-IDF below this will
+		 * not get emitted during reduce step.
+		 */
+		public static final double THRESHOLD = .00001;
+		
 	    private static final DecimalFormat DF = new DecimalFormat("###.########");
 	    
 	    /**
@@ -65,7 +71,9 @@ public class TFIDF {
 	            double tfIdf = numberOfDocumentsInCorpus == numberOfDocumentsInCorpusWhereKeyAppears ?
 	                    tf : tf * Math.log10(idf);
 	 
-	            context.write(new Text(key + "@" + document), new Text(DF.format(tfIdf)));
+	            if (tfIdf >= THRESHOLD) {
+	            	context.write(new Text(key + "@" + document), new Text(DF.format(tfIdf)));
+	            }
 	        }
 	    }
 	}

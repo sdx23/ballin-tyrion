@@ -118,9 +118,14 @@ public class Main {
 	    FileSystem hdfs = FileSystem.get(conf);
 	    FileUtil.copyMerge(hdfs, new Path(tmp + "/job3"), hdfs, new Path(csvInputPath), false, conf, null);
 	    
-	    //first pass: get all document names
-	    TreeMap<String, String> documents = new TreeMap<String, String>();
+	    //This map stores the document name and the current TF-IDF value for the given word.
+	    //We can get away with this because the words are sorted alphabetically, so our 3rd dimension (word)
+	    //Only needs to be stored as a string.
+	    //0 is a default value in case a document is missing a TF-IDF value, which gets set in the first pass
+	    //and on row resets
+	    TreeMap<String, String> documentAndIDF = new TreeMap<String, String>();
 	    
+	    //first pass: get all document names
 	    Path csvInputpathHDFS = new Path(csvInputPath);
         
         BufferedReader br = new BufferedReader(new InputStreamReader(hdfs.open(csvInputpathHDFS)));
@@ -131,7 +136,7 @@ public class Main {
         	String wordAndDoc = line.split("\t")[0];
         	String doc = wordAndDoc.split("@")[1];
         	if (!previousDocument.equals(doc)) {
-        		documents.put(doc, "0");
+        		documentAndIDF.put(doc, "0");
         	}
         }
         
@@ -146,7 +151,7 @@ public class Main {
         String previousWord = "";
         
         //first write the header (document names)
-        Set<String> keys = documents.keySet();
+        Set<String> keys = documentAndIDF.keySet();
         int numDocuments = keys.size();
         String[] firstRow = new String[numDocuments + 1];
         
@@ -177,27 +182,22 @@ public class Main {
     			
         		c = 1;
         		
-        		//create row and then reset.
-        		//only write it if it is above the magic threshold 
+        		//create row and then reset. 
         		boolean writeRow = false;
         		for (String key : keys) {
-        			String stringValue = documents.get(key);
+        			String stringValue = documentAndIDF.get(key);
         			double val = Double.parseDouble(stringValue);
         			
-        			if (val >= .00001) {
-        				writeRow = true;        				
-        			}
-        			
         			row[c] = idf;
-        			documents.put(key, "0");
+        			documentAndIDF.put(key, "0");
         			c++;
         		}
         		
-        		if (writeRow) writer.writeNext(row);
+        		writer.writeNext(row);
         	}
         	
         	//record the idf in the map for this current word.
-        	documents.put(doc, idf);
+        	documentAndIDF.put(doc, idf);
         	previousWord = word;
         }
         
