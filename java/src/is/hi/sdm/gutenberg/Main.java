@@ -196,7 +196,6 @@ public class Main {
         			
         			if (val >= THRESHOLD) {
         				writeRow = true;
-        				System.out.println(stringValue + " is >= " + THRESHOLD);
         			}
         			
         			row[c] = stringValue;
