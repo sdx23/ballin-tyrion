@@ -31,6 +31,12 @@ import au.com.bytecode.opencsv.CSVWriter;
 import com.cotdp.hadoop.ZipFileInputFormat;
 
 public class Main {
+	/**
+	 * Threshold for values to be considered relevant. Any TF-IDF below this will
+	 * not get emitted during csv generation.
+	 */
+	public static final double THRESHOLD = .00001;
+	
 	private static String inputPath;
 	private static String outputPath;
 	private static String tmp;
@@ -188,12 +194,17 @@ public class Main {
         			String stringValue = documentAndIDF.get(key);
         			double val = Double.parseDouble(stringValue);
         			
-        			row[c] = idf;
+        			if (val >= THRESHOLD) {
+        				writeRow = true;
+        				System.out.println(stringValue + " is >= " + THRESHOLD);
+        			}
+        			
+        			row[c] = stringValue;
         			documentAndIDF.put(key, "0");
         			c++;
         		}
         		
-        		writer.writeNext(row);
+        		if (writeRow) writer.writeNext(row);
         	}
         	
         	//record the idf in the map for this current word.
@@ -213,7 +224,7 @@ public class Main {
 	    outputPath = "gbp-outputs";
 	    tmp = "gbp-tmp";
 	    
-	    //Need to hard code number of documents, for ease of use right now.
+	    //Need to hard code number of documents
 	    conf.set("corpus", args[0]);
 	    
 	    if (job1(conf)) {
