@@ -13,6 +13,9 @@ module add java
 # TF-IDF values!
 export GBP_CORPUS=1
 
+# avoid problems with decimal points
+export LC_ALL="en_US.UTF-8"
+
 ### Run the myHadoop environment script to set the appropriate variables
 #
 # Note: ensure that the variables are set correctly in bin/setenv.sh
