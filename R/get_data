@@ -1,0 +1,11 @@
+#!/bin/bash
+
+#gets and transforms data
+#needs download.log
+
+rsync -P maxvoit@sierra.futuregrid.org:gbp-outputs/data.csv .
+sed -i 's!/!!g' data.csv
+sed -i '2i'`./label.pl 2>/dev/null` data.csv
+sed -i 's/"//g' data.csv
+./transp.py data.csv data.t.csv
+
